@@ -42,13 +42,13 @@
     function get_exp($binary, $number){
         $binary = str_split($binary);
 
-        if($number > 1 || $number < 0){
-	     $exp = (array_search(',',$binary) - 1);
-	} 
-	else{
-	     $exp = (-(array_search('1',$binary)) + array_search(',',$binary));
-        }		
-	return $exp;
+		if($number > 1){
+		    $exp = (array_search(',',$binary) - 1);
+		}
+		else{
+		    $exp = (-(array_search(',',$binary)) + array_search(',',$binary));
+		}
+		return $exp;
     }
 
 
@@ -76,27 +76,29 @@
 //===========================================================================================
 
     function calcFP($binary,$number){
-	$converted = array();//vetor que contera o resultado final
+	$converted = array();
 	$binary = str_split($binary);
-        $bin_is_negative = False;
-        
-	//selecionando o sinal do numero
+
 	if($number > 0){
             array_push($converted,0);
 	}
 	else{
 	    array_push($converted,1);
-            $bin_is_negative = True;
+	}
+
+	if($number < 0){
 	    $number = -$number;
 	}
-        //selecao do expoente
-	if($number > 1 || $number < 0){
+
+	if($number > 0 && $number < 1) {
+	    echo "if 2\n";
+	    $exp = (-(array_search('1',$binary)) + array_search(',',$binary));
+		}
+	else{
+	    echo "if 1\n";
 	    $exp = (array_search(',',$binary) - 1);
 	}
-	else{
-	    $exp = (-(array_search('1',$binary)) + array_search(',',$binary));
-	}
-	//$exp = get_exp($binary,$number);
+
 	array_push($converted,exp_hash_norm($exp));
 
 	$n = count($binary);
@@ -190,67 +192,63 @@
 //=========================================================================================
   
     function rebuildFP($num_fp){
-        $sinal = $num_fp[0];//sinal do numero
-        $expoente_fp = array();//expoente do numero em FP
-	$mantissa = array();//mantissa do numero em FP
-	$mantissa_decimal = array();//o valor da mantissa em decimal
-	$parte_inteira = array();//a parte inteira no numero em decimal
-	$parte_fracionaria = array();//a parte fracionária do numero em decimal
-       
-	//extraindo o expoente do numero em FP
+        $sinal = $num_fp[0];
+        $expoente_fp = array();
+	$mantissa = array();
+	$mantissa_decimal = array();
+	$parte_inteira = array();
+	$parte_fracionaria = array();
+
 	for($i = 1; $i < 4;$i++){
             array_push($expoente_fp,$num_fp[$i]);
 	}
-	//extraindo a mantissa do numero em FP
 	for($i = 4; $i < 8; $i++){
             array_push($mantissa,$num_fp[$i]);
 	}
-        
 	$expoente_fp = implode($expoente_fp);
-	$expoente_decimal = exp_hash_to_dec($expoente_fp);//convertendo o expoente para decimal
+	$expoende_decimal = exp_hash_to_dec($expoente_fp);
 
-        //de acordo com o valor do expoente, ajusta como serao extraidos os valores da mantissa
 	if($expoente_decimal < 0){
             array_push($mantissa_decimal,0);
 	    array_push($mantissa_decimal,',');
 	    $aux = (-$expoente_decimal) - 1;
 	    for($i = 0; $i < $aux; $i++){
-	        array_push($mantissa_decimal,$mantissa[$i]);
+	        array_push($mantissa_decimal,0);
 	    }
 	}
 
-	else{
-	    array_push($mantissa_decimal,'1');
+	array_push($mantissa_decimal,'1');
+
+	if($expoente_decimal >= 0){
 	    for($i = 0; $i < count($mantissa); $i++){
                 if ($i == $expoente_decimal){
-                   array_push($mantissa_decimal,',');
+                   array_push($matissa_decimal,',');
 		}
 		array_push($mantissa_decimal,$mantissa[$i]);
 	    }
-	}
-
+        }
         //$mantissa_decimal = implode($mantissa_decimal);
 	$aux = array_search(',',$mantissa_decimal);
 
         for($i = 0; $i < $aux; $i++){
-            array_push($parte_inteira,$mantissa_decimal[$i]);
+            array_push($mantissa_decimal[$i],$parte_inteira);
 	}
 
 	$parte_inteira = array_reverse($parte_inteira);
 
 	for($i = $aux + 1; $i < count($mantissa_decimal);$i ++){
-            array_push($parte_fracionaria,$mantissa_decimal[$i]);
+            array_push($mantissa_decimal[$i],$parte_fracionaria);
 	}
 
 	$resultado = 0;
-        //calculando o resultado em decimal, parte inteira
+
 	for($i = 0; $i < count($parte_inteira);$i++){
             if(strcmp($parte_inteira[$i],'0') == 0){
                 continue;
 	    }
 	    $resultado += pow(2,$i);
 	}
-        //calculando o resultado em decimal, parte fracionaria
+        
 	for($i = 0; $i < count($parte_fracionaria); $i++){
             if(strcmp($parte_fracionaria[$i],'0') == 0){
                 continue;

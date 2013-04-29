@@ -22,7 +22,7 @@
         $tpl->EXP_EXC = 3 + $exp;
 	$tpl->EXP_EXC_BIN = decbin(3 + $exp);
 	$tpl->MANTISSA = get_mantissa($bin);
-	$tpl->VALOR_FP = implode([$sinal,$tpl->EXP_EXC_BIN,$tpl->MANTISSA]);
+	$tpl->VALOR_FP = implode(array($sinal,$tpl->EXP_EXC_BIN,$tpl->MANTISSA));
 	$tpl->block("BLOCK_RESOLUCAO");
     }
  
