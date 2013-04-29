@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+    </head>
+   <link rel="stylesheet" href="css/calc.css"/>
+<body>
+    <div class="separate">   
+	<h1 class="header">
+        Resoluções de exemplos
+	</h1>
+	<form method="post" action="#">
+		Digite o valor para o qual deseja ver o 
+		passo a passo da conversão (de 0.25 a 15.5):
+		<br/>
+		<input name="FPnum">
+		<br/>
+		<input type="submit"  value="Converter">
+	</form>
+        <!-- BEGIN BLOCK_RESOLUCAO -->
+        <div class="block">
+
+            Para o valor {VALOR}, teremos o seguinte:<br/>
+            <!-- BEGIN BLOCK_POSITIVO -->
+            Como o número é positivo, temos que o primeiro bit do número em ponto flutuante
+            será 0.<br/>
+            <!-- END BLOCK_POSITIVO -->
+
+            <!-- BEGIN BLOCK_NEGATIVO -->
+            Como o número é negativo, temos que o primeiro bit do número em ponto flutuante
+            será 1.<br/>
+            <!-- END BLOCK_NEGATIVO -->
+            <br/>
+            Convertendo o número todo para binário encontramos o seguinte valor:
+            {NUM_BINARIO}.
+            <br/>
+            A partir deste número em binário, movêmos a virgula até antes do bit 1 mais significativo, 
+	    obtendo um expoente igual à {EXPOENTE}.<br/>
+            
+	    Somando este expoente encontrado com o valor do excesso de 8 bits, que é 3,temos como resultado {EXP_EXC}, 
+	    que em binário equivale à {EXP_EXC_BIN}.<br/> Agora basta juntarmos os valores obtidos até agora, sinal mais o expoente e 
+	    a mantissa {MANTISSA},truncando-a caso ela passe dos 4 bits, 
+	    para formarmos o número {VALOR} em ponto flutuante.<br/>
+	    Com isso, calculamos que {VALOR} em ponto flutuante equivale a {VALOR_FP}.
+        </div>
+        <!-- END BLOCK_RESOLUCAO -->
+    </div>
+</body>	
+</html> 
