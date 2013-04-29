@@ -1,4 +1,5 @@
 <?php
+    
     function exp_hash_norm($exp){
         $exps = array(-2 => "001", -1 => "010", 0 => "011", 1 => "100", 2 => "101", 3 => "110");
 	return $exps[$exp];
@@ -9,7 +10,7 @@
         return array_search($exp,$exps);
     }
 //===========================================================================================
-
+    //funcao que faz a conversao no numero no caso nao normalizado
     function NNcalcFP($binary,$number){
 	$binary = str_split($binary);
 	$converted = array();
@@ -21,12 +22,8 @@
             array_push($converted,1);
 	}
 	array_push($converted,"000");
-	//=========================================================================\\
-	//                                O erro tá aqui                           \\
-	//=========================================================================\\                                
 	for($i = array_search(',',$binary)+3 ; $i < count($binary) || count($aux) < 4;$i++)
 	{
-            //echo $i;
             array_push($aux,$binary[$i]);
 	}
         
@@ -38,7 +35,7 @@
     }
 
 //===========================================================================================
-    
+    //funcao para calcular o valor do expoente
     function get_exp($binary, $number){
         $binary = str_split($binary);
 
@@ -52,6 +49,7 @@
     }
 
 
+    //funcao para extrair a mantissa do numero
     function get_mantissa($binary){ 
 	$binary = str_split($binary);
 	$n = count($binary);
@@ -96,11 +94,12 @@
 	else{
 	    $exp = (-(array_search('1',$binary)) + array_search(',',$binary));
 	}
-	//$exp = get_exp($binary,$number);
 	array_push($converted,exp_hash_norm($exp));
 
 	$n = count($binary);
 	$counter = 0;
+	//extraindo a parte do numero apos o primeiro 1
+	//no caso nao normalizado
 	if($number > 0 && $number < 1){
             $first_one = array_search('1',$binary);
 	    for($i = $first_one+1; $i < $n; $i++){
@@ -112,6 +111,7 @@
 	    }
 
 	}
+	//caso normalizado
 	else{
 	    for($i = 1; $i < $n; $i++){
 	        if($counter == 4){
@@ -123,6 +123,7 @@
 	        }
             }
 	}
+	//caso ainda falte numeros pra completar os bits, preenche com zeros
 	while($counter < 4){
 	    array_push($converted,0);
 	    $counter++;
@@ -133,7 +134,8 @@
   }
 
 //===========================================================================================
-
+    //funcao para converter a parte fracionaria do numero para binario
+    //OBS: ainda generalizar para mais representacoes
     function calcFracPart($fraction){
         $frac_bin = array();
 	$mult_times = 0;
@@ -159,31 +161,31 @@
     }
 
 //===========================================================================================
-
+    //funcao que faz a conversao do numero para FP
     function convertFP($numToConvert){
 	$num_copy = $numToConvert;
 
 	if($numToConvert < 0){
             $num_copy = -$numToConvert;
 	}
-
+        //extraindo a parte fracionaria da parte inteira
 	$num_dec_part = (int) $num_copy;
 	$num_frac_part = $num_copy - $num_dec_part;
+	//convertendo a parte inteira para binario
 	$bin_dec_part = decbin($num_dec_part);
+	//chamando a funcao para pegar a parte fracionaria em binario
 	$bin_frac_part = calcFracPart($num_frac_part);
+	//juntando os valores em uma unica string
         $num_bin_full = implode(array($bin_dec_part,',', $bin_frac_part));
-         
-	//return implode(array($bin_dec_part,',',$bin_frac_part));
+        
+	//caso da notacao nao normalizada
 	if($num_copy < 0.25){
             $num_converted = NNcalcFP($num_bin_full,$numToConvert);
 	}
+	//caso da notacao normalizada
 	else{
             $num_converted = calcFP($num_bin_full,$numToConvert);
 	}
-	//return implode(array($bin_dec_part,',', $bin_frac_part));
-	/*while(count(str_split($num_converted)) > 8){
-            $junk = array_pop($num_converted);
-	}*/
 	return $num_converted;
     }
 
@@ -229,7 +231,6 @@
 	    }
 	}
 
-        //$mantissa_decimal = implode($mantissa_decimal);
 	$aux = array_search(',',$mantissa_decimal);
 
         for($i = 0; $i < $aux; $i++){
@@ -243,6 +244,7 @@
 	}
 
 	$resultado = 0;
+
         //calculando o resultado em decimal, parte inteira
 	for($i = 0; $i < count($parte_inteira);$i++){
             if(strcmp($parte_inteira[$i],'0') == 0){
@@ -267,7 +269,7 @@
     }
 
 //=========================================================================================
-
+    //Funcao que retorna o numero completo em binario
     function convert_bin($numToConvert){
 		$num_copy = $numToConvert;
 
