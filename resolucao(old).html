@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="css/resolucao.css">
+</head>
+<body>
+Para o valor {VALOR}, teremos o seguinte:<br/>
+<!-- BEGIN BLOCK_POSITIVO -->
+Como o número é positivo, temos que o primeiro bit do número em ponto flutuante
+será 0.<br/>
+<!-- END BLOCK_POSITIVO -->
+
+<!-- BEGIN BLOCK_NEGATIVO -->
+Como o número é negativo, temos que o primeiro bit do número em ponto flutuante
+será 1.<br/>
+<!-- END BLOCK_NEGATIVO -->
+<br/>
+Convertendo o número todo para binário encontramos o seguinte valor:
+{NUM_BINARIO}.
+<br/>
+A partir deste número em binário, movêmos a virgula até antes do bit 1 mais significativo,<br/>
+obtendo um expoente igual à {EXPOENTE}.
+<br/>
+Somando este expoente encontrado com o valor do excesso de 8 bits, que é 3,<br/>
+temos como resultado {EXP_EXC}, que em binário equivale à {EXP_EXC_BIN}.
+</body>
+</html>
