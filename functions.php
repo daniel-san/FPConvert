@@ -16,7 +16,7 @@ function exp_hash_to_dec($exp){
 function NNcalcFP($binary,$number){
     $binary = str_split($binary);
     $converted = array();
-        $aux = array();
+    $aux = array();
     if($number > 0){
         array_push($converted,0);
     }
